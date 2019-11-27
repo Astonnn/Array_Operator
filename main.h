@@ -5,8 +5,8 @@
 //swap(int,int)
 #define Swap(a,b) do{a^=b;b^=a;a^=b;}while(0)
 //系统参数：数组元素个数、一行打印元素个数、每个元素的打印宽度等
-int num_of_arr,num_in_row,width_of_each;
-//打印数组~
+int num_of_arr=10,num_in_row=10,width_of_each=5;
+//打印数组
 void printarr(int *a, int n){
 	int i=0;
 	for(;i<n;i++)printf("%d\n",a[i]);
@@ -14,11 +14,60 @@ void printarr(int *a, int n){
 //生成数组的样本数据~
 void FillArray(int a[], int n){
 	srand(time(NULL));
-	while(--n+1)a[n]=rand();
-}
-//配置系统参数：数组元素个数、一行打印元素个数、每个元素的打印宽度等
-void Config(){
+	printf("1)用指定范围的随机数填充数组\n2)键盘输入\n3)整个数组填同一个值\n4)用等差序列填充数组\n");
+	char k;
+	int f=1;
+	while(f){
+		k=getch();
+		switch(k){
+			case '1':
+			//用指定范围的随机数填充数组
+				f=0;
+				printf("input:\n");
+				int l,r;
+				scanf("%d%d",&l,&r);
+				while(--n+1)a[n]=rand()%(r-l+1)+l;
+				break;
+			case '2':
+			//键盘输入
+				f=0;
+				printf("input:\n");
+				while(--n+1)scanf("%d",a+n);
+				break;
+			case '3':
+			//整个数组填同一个值
+				f=0;
+				printf("input:\n");
+				int val;
+				scanf("%d",&val);
+				while(--n+1)a[n]=val;
+				break;
+			case '4':
+			//用等差序列填充数组
+				f=0;
+				printf("input:\n");
+				int a0,d;
+				scanf("%d%d",&a0,&d);
+				while(--n+1)a[n]=a0+n*d;
+				break;
+			default:
+				break;
+		}
+	}
 	
+}
+//配置系统参数：数组元素个数、一行打印元素个数、每个元素的打印宽度等~
+void Config(){
+	int n;
+	printf("数组元素个数\n");
+	scanf("%ud",&n);
+	num_of_arr=n;
+	printf("一行打印元素个数\n");
+	scanf("%ud",&n);
+	num_in_row=n;
+	printf("每个元素的打印宽度\n");
+	scanf("%ud",&n);
+	width_of_each=n;
 }
 //逆置数组~
 void Reverse(int a[], int n){
@@ -97,11 +146,6 @@ void SelectSort(int a[],int n){
 }
 //交换排序(快速排序?)
 void ExchangeSort(int a[],int n){}
-//普通查找~
-int Search(int a[], int n, int val){
-	while(--n+1)if(a[n]==val)return n;
-	return -1;
-}
 //二分查找~
 int BiSearch(int a[], int n, int val){
 	int l=0,mid,r=n-1;
