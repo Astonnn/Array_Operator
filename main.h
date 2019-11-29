@@ -1,6 +1,7 @@
 #include<stdio.h>
 #include<stdlib.h>
 #include<time.h>
+#include<math.h>
 
 //swap(int,int)
 #define Swap(a,b) do{a^=b;b^=a;a^=b;}while(0)
@@ -9,7 +10,13 @@ int num_of_arr=10,num_in_row=10,width_of_each=5;
 //打印数组
 void printarr(int *a, int n){
 	int i=0;
-	for(;i<n;i++)printf("%d\n",a[i]);
+	while(i<n){
+		int j=i;
+		for(;i<j+num_in_row;i++){
+			printf("%d ",a[i]);
+		}
+		printf("\n");
+	}
 }
 //生成数组的样本数据~
 void FillArray(int a[], int n){
@@ -78,9 +85,27 @@ void Reverse(int a[], int n){
 		a[n-1-i]=t;
 	}
 }
-void insert(int a[], int n, int pos, int val);//在数组中pos下标处插入新元素
-void Delete(int a[], int n, int id); //删除指定下标的元素
-void DeleteRange(int a[], int n, int s, int t);//删除s..t下标区间的元素
+//在数组中pos下标处插入新元素~
+void insert(int a[], int n, int pos, int val){
+	num_of_arr++;
+	for(;pos<n;pos++){
+		int t=a[pos];
+		a[pos]=val;
+		val=t;
+	}
+	a[n]=val;
+}
+//删除指定下标的元素~
+void Delete(int a[], int n, int id){
+	for(;id<n-1;id++)a[id]=a[id+1];
+	num_of_arr--;
+}
+//删除s..t下标区间的元素~
+void DeleteRange(int a[], int n, int s, int t){
+	int i=0;
+	for(;t+i<n-1;i++)a[s+i]=a[t+i];
+	num_of_arr-=t-s+1;
+}
 //查找值为val的元素，找到返回其下标，找不到返回-1~
 int Search(int a[], int n, int val){
 	while(--n+1)if(a[n]==val)return n;
@@ -119,7 +144,30 @@ float average(int a[],int n){
 	for(;i<n;i++)s+=a[i];
 	return (float)s/n;
 }
-void OrderInsert(int a[], int n, int val);//在有序数组中插入新元素保持有序性
+//计算数组的方差~
+float variance(int a[],int n){
+	int s2=0,i=0;
+	for(;i<n;i++)s2+=a[i]*a[i];
+	float x=average(a,n);
+	return (float)s2/n-x*x;
+}
+//计算数组的均方差~
+float Standard_Deviation(int a[],int n){
+	return sqrt(variance(a,n));
+}
+//在有序数组中插入新元素保持有序性~
+void OrderInsert(int a[], int n, int val){
+	num_of_arr++;
+	int i=0;
+	for(;i<n;i++){
+		if(a[i]>val){
+			int t=a[i];
+			a[i]=val;
+			val=t;
+		}
+	}
+	a[n]=val;
+}
 //冒泡排序~
 void BubbleSort(int a[], int n){
 	int i=0,j;
@@ -146,14 +194,15 @@ void SelectSort(int a[],int n){
 }
 //交换排序(快速排序?)
 void ExchangeSort(int a[],int n){}
-//二分查找~
+//二分查找  wrong
 int BiSearch(int a[], int n, int val){
+	BubbleSort(a,n);
 	int l=0,mid,r=n-1;
 	while(r>=l){
-		if(l==r&&r==n-1)return -1;
 		mid=(l+r)/2;
 		if(a[mid]==val)return mid;
 		(a[mid]<val)?(l=mid+1):(r=mid-1);
+		if(l==r&&r==n-1)return -1;
 	}
 	return -1;
 }
