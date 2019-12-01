@@ -7,13 +7,14 @@
 #define Swap(a,b) do{a^=b;b^=a;a^=b;}while(0)
 //系统参数：数组元素个数、一行打印元素个数、每个元素的打印宽度等
 int num_of_arr=10,num_in_row=10,width_of_each=5;
-//打印数组
+//打印数组~
 void printarr(int *a, int n){
 	int i=0;
 	while(i<n){
 		int j=i;
 		for(;i<j+num_in_row;i++){
-			printf("%d ",a[i]);
+			int c=width_of_each-printf("%d",a[i]);
+			while(c--)printf(" ");
 		}
 		printf("\n");
 	}
@@ -99,6 +100,18 @@ void insert(int a[], int n, int pos, int val){
 void Delete(int a[], int n, int id){
 	for(;id<n-1;id++)a[id]=a[id+1];
 	num_of_arr--;
+}
+//删除指定值的元素~
+void DeleteVal(int a[], int n, int val){
+	int i=0;
+	for(;i<n;i++){
+		if(a[i]==val){
+			int id=i--;
+			for(;id<n-1;id++)a[id]=a[id+1];
+			n--;
+		}
+	}
+	num_of_arr=n;
 }
 //删除s..t下标区间的元素~
 void DeleteRange(int a[], int n, int s, int t){
@@ -193,7 +206,9 @@ void SelectSort(int a[],int n){
 	}
 }
 //交换排序(快速排序?)
-void ExchangeSort(int a[],int n){}
+void ExchangeSort(int a[],int n){
+	BubbleSort(a,n);
+}
 //二分查找  wrong
 int BiSearch(int a[], int n, int val){
 	BubbleSort(a,n);
@@ -210,9 +225,8 @@ int BiSearch(int a[], int n, int val){
 端。 例如 int b[10]={0,1,2,3,4,5, 6,7,8,9}; 调用 LeftRotate(b,10,4)之后，b的元素为
 {4，5，6，7，8，9，0，1，2，3} */
 int LeftRotate(int a[], int n, int m){
-	m=(m>0)?(m%n):(m%n+n);
-//	if(m<0)return RightRotate(a,n,-m);
 	if(m==0)return m;
+	m=(m>0)?(m%n):(m%n+n);
 	int i=0,t[m];
 	for(;i<m;i++)t[i]=a[i];
 	for(;i<n;i++)a[i-m]=a[i];
